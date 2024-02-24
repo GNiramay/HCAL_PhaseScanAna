@@ -5,8 +5,10 @@
 import ROOT as rt
 from sys import argv
 
+# TDC code description
 TDCInfo = ["Prompt","Slight delay","Delayed","No TDC"]
 
+# Function to make the stackplot
 def GetStack(hist_):
     hs_ = rt.THStack()
     hTotEvt = hist_.ProjectionX()
@@ -18,19 +20,18 @@ def GetStack(hist_):
             rt.TH1F("hTDC2","",nxbins,hTotEvt.GetBinLowEdge(0),hTotEvt.GetBinLowEdge(nxbins)),
             rt.TH1F("hTDC3","",nxbins,hTotEvt.GetBinLowEdge(0),hTotEvt.GetBinLowEdge(nxbins))]  
 
-    for by in range(1,nybins+1):
-        hTDC[by-1].SetTitle(f"TDC {by-1} ({TDCInfo[by-1]});time shift [ns]")
-        hTDC[by-1].SetFillColor(by+1)
-        hTDC[by-1].SetLineColor(1)
+    for by in range(nybins):
+        hTDC[by].SetTitle(f"TDC {by} ({TDCInfo[by]});time shift [ns]")
+        hTDC[by].SetFillColor(by+2)
+        hTDC[by].SetLineColor(1)
 
         for bx in range(nxbins):
             if hTotEvt.GetBinContent(bx+1) > 0:
-                hTDC[by-1].SetBinContent(bx,hist_.GetBinContent(hist_.GetBin(bx+1,by))/hTotEvt.GetBinContent(bx+1))
+                hTDC[by].SetBinContent(bx,hist_.GetBinContent(hist_.GetBin(bx+1,by+1))/hTotEvt.GetBinContent(bx+1))
 
-        hs_.Add(hTDC[by-1])
+        hs_.Add(hTDC[by])
 
     return hs_
-
 
 # Load the 2D histogram
 tf = rt.TFile(argv[1],"READ")
@@ -41,11 +42,12 @@ hs = GetStack(hist)
 
 tc = rt.TCanvas("aa","bb",800,600)
 hs.Draw("hist")
+
 ## Some formatting
 hs.SetTitle(f"{hist.GetTitle()};time shift [ns];fraction of events")
 tc.BuildLegend(.7,.7,.9,.9)
 hs.SetMaximum(1)
 
-## Save png
+## Save the plot
 tc.SaveAs(argv[2])
 tf.Close()
