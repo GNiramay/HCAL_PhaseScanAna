@@ -3,9 +3,9 @@
 This repository holds the codes for the following actions.
 
 1. Search for RAW files created during phase scans (LED, QIE)
-2. Create nanoAODs from RAW using hcalnano
-3. Skim them to keep only the relevant branches, use `uMNio_UserWord` to determine the phase delay
-4. Script to make important histograms
+2. Create hcalnano's from RAW
+3. Skim the hcalnano's
+4. Make TDC Stack plot
 5. Batch processing using condor
 
 ## Create nanoAODs from RAW using hcalnano
@@ -24,3 +24,19 @@ This works. So, in the end, a RAW file can be converted to `hcalnano` using the 
 ```
 . MakeNano.sh <input RAW root file> <output Nano root file>
 ```
+## Skim the hcalnano's
+`SkimNano.py` script skims the hcalnanos in the following way.
+1. Events with `uMNio_UserWord1` value of `111,888,999` are ignored
+2. `uMNio_UserWord1` is used to calculate the relative shift in the QIE timing.
+3. For each event, channels with charges in SOI and SOI close to the pdestal levels are ignored. (To ensure the genuine current pulses formed the hits)
+4. Only the relevant branches are kept
+5. A new root file containing these branches is formed
+
+The syntax is given in the file itself. 
+
+## Make TDC Stack plot
+This is done in two steps.
+1. For a given `iphi` slice, create a 2D histogram of TDC in `ts 3` vs `time shift`. This is done by `PlotTDCFrac.py`
+2. From the 2D histogram, get projection along x-axis, for each TDC value (y bins). Stack these projections, and scale them to 1. This is done by `MakeTDCStack.py`
+
+The syntax for both is given in the respective files.
