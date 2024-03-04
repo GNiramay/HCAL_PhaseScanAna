@@ -2,11 +2,16 @@
 # Syntax: python3 SkimNano.py <input root file> <output root file>
 
 from sys import argv
-from ROOT import RDataFrame, std
+from ROOT import RDataFrame, std, EnableImplicitMT
 
-# Copied from John's skim code. Ensures the hits really have high energy deposit (very far from the noise levels)
-cutHB = "(DigiHB_fc2 > 21.*DigiHB_pedestalfc2)||(DigiHB_fc3 > 21.*DigiHB_pedestalfc3)||(DigiHB_fc4 > 46.*DigiHB_pedestalfc4)"
-cutHE = "(DigiHE_fc2 > 21.*DigiHE_pedestalfc2)||(DigiHE_fc3 > 21.*DigiHE_pedestalfc3)||(DigiHE_fc4 > 46.*DigiHE_pedestalfc4)"
+EnableImplicitMT()
+
+# # Copied from John's skim code. Ensures the hits really have high energy deposit (very far from the noise levels)
+# cutHB = "(DigiHB_fc2 > 21.*DigiHB_pedestalfc2)||(DigiHB_fc3 > 21.*DigiHB_pedestalfc3)||(DigiHB_fc4 > 46.*DigiHB_pedestalfc4)"
+# cutHE = "(DigiHE_fc2 > 21.*DigiHE_pedestalfc2)||(DigiHE_fc3 > 21.*DigiHE_pedestalfc3)||(DigiHE_fc4 > 46.*DigiHE_pedestalfc4)"
+
+cutHB = "DigiHB_fc3 > 0."
+cutHE = "DigiHE_fc3 > 0."
 
 df = RDataFrame("Events",argv[1])\
     .Define("tshift","(uMNio_UserWord1*(uMNio_UserWord1<2147483648))+(uMNio_UserWord1-4294967296)*(uMNio_UserWord1>2147483648)"
