@@ -37,7 +37,7 @@ def GetStack(hist_,ULabel):
 
 tf_in = TFile(argv[1])
 hN = tf_in.Get("hN_TDCvtshift")
-SOI = 4                         # Sample of Intrest
+SOI = 3                         # Sample of Intrest
 StackList = []
 
 # Loop over depth
