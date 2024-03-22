@@ -16,6 +16,7 @@ SOI = 4
 nBins = [4,    33,    51,     4]
 bLow =  [0.5, -16.5, -25.5,   0]
 bHigh = [4.5,  16.5,  25.5,   4]
+model = THnDModel("hN_TDCvtshift",";depth;ieta;tshift;TDC",4,nBins,bLow,bHigh)
 
 # Axes: depth  ieta   tshift  QFrac	QSum
 QnBins = [4,    33,    51,   100,	10]
@@ -30,13 +31,12 @@ df = df.Define('MyShift',f"vector<Double_t>temp; for(auto cc: {Det}_tdc{SOI}) te
 # hist = df.HistoND(model[0],[f"{Det}_depth",f"{Det}_ieta","MyShift",f"{Det}_tdc{SOI}"])
 
 tf = TFile(OutRoot,"RECREATE")
-model = THnDModel("hN_TDCvtshift",";depth;ieta;tshift;TDC",4,nBins,bLow,bHigh)
 df.HistoND(model,[f"{Det}_depth",f"{Det}_ieta","MyShift",f"{Det}_tdc{SOI}"]).Write()
 
-for ts in range(8):
-    df = df.Define(f"QFrac{ts}",f"{Det}_fc{ts}/QSum")
-    model_ = THnDModel(f"hN_Q{ts}vTShift",";depth;ieta;tshift;QFrac,QSum",5,QnBins,QbLow,QbHigh)
-    df.HistoND(model_,[f"{Det}_depth",f"{Det}_ieta","MyShift",f"QFrac{ts}",'QSum']).Write()
+# for ts in range(8):
+#     df = df.Define(f"QFrac{ts}",f"{Det}_fc{ts}/QSum")
+#     model_ = THnDModel(f"hN_Q{ts}vTShift",";depth;ieta;tshift;QFrac,QSum",5,QnBins,QbLow,QbHigh)
+#     df.HistoND(model_,[f"{Det}_depth",f"{Det}_ieta","MyShift",f"QFrac{ts}",'QSum']).Write()
 
 # hist.Write()
 tf.Write()
