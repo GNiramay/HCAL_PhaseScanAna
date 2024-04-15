@@ -10,8 +10,8 @@ CondFile=ConfFiles/${FileTag}_NanoProd.jdl
 
 echo "universe = vanilla"> $CondFile
 echo "Executable = Bash_NanoProd.sh">> $CondFile
-echo "Transfer_Input_Files = ../step2_RAW2DIGI_RECO_USER.py">> $CondFile
 echo "WhenToTransferOutput = NEVER">> $CondFile
+echo "+MaxRuntime = 40000">> $CondFile
 printf "Output = StdOut/${FileTag}_%s(Cluster)_job%s(ProcId).stdout\n" $ $>> $CondFile
 printf "Error = StdErr/${FileTag}_%s(Cluster)_job%s(ProcId).stderr\n" $ $>> $CondFile
 printf "Log = Log/${FileTag}_%s(Cluster)_job%s(ProcId).log\n" $ $>> $CondFile
