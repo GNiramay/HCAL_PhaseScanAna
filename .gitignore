@@ -1,2 +1,3 @@
 PNG/*.png
 */__pycache__
+*.root
