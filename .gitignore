@@ -4,3 +4,4 @@ PNG/*.png
 CondorSubmissions/Log
 CondorSubmissions/StdErr
 CondorSubmissions/StdOut
+CMSSW_*
