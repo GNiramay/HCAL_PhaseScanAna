@@ -27,9 +27,12 @@ The plotting goals change all the time. There is a lot of freedom. Following are
 
 ## Example
 1. 2024 phase scan hcalnano file paths are written at `FilePaths/hcalnano*`
-2. Script for making 4 dimensional histogram of rechit ieta,depth,timeshift, energy is written at `Analysis/RespCorr.py`
-3. Condor config file is written at `ConfFiles/RespCorr_NoSkim.jdl`
-4. Submit condor jobs. `condor_submit ConfFiles/RespCorr_NoSkim.jdl`
+2. Script for making 4 dimensional histogram of rechit ieta,depth,timeshift, energy is written at [Analysis/RespCorr.py](Analysis/RespCorr.py)
+3. Condor config file is written at [ConfFiles/RespCorr_NoSkim.jdl](ConfFiles/RespCorr_NoSkim.jdl)
+4. Submit condor jobs.
+```
+condor_submit ConfFiles/RespCorr_NoSkim.jdl
+```
 5. Once the jobs finish,
 ```
 hadd Hadded/hcalnano_r379349.root  QIE*_r379349*
@@ -38,7 +41,7 @@ hadd Hadded/Full.root Hadded/hcalnano*
 rm -f *.root
 . CleanIn.sh
 ```
-6. Plotting script is written at `Plotting/RespCorr.py`
+6. Plotting script is written at [Plotting/RespCorr.py](Plotting/RespCorr.py)
 7. Following command saves the plots to [Niramay's webpage](https://ngogate.web.cern.ch/ngogate/HCAL_PFG_Dump/PhaseScan_2024/)
 ```
 cd Plotting/
