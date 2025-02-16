@@ -1,7 +1,6 @@
-PNG/*.png
 */__pycache__
 *.root
-CondorSubmissions/Log
-CondorSubmissions/StdErr
-CondorSubmissions/StdOut
+Log
+StdErr
+StdOut
 CMSSW_*
