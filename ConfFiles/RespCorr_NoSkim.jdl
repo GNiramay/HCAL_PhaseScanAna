@@ -1,0 +1,12 @@
+AnaScript = RespCorr
+universe = vanilla
+Executable = Exec/GeneralAna.sh
+Transfer_Input_Files = Analysis/$(AnaScript).py
+WhenToTransferOutput = ON_EXIT
+Output = StdOut/$(AnaScript)_$(Cluster)_job$(ProcId).stdout
+Error = StdErr/$(AnaScript)_$(Cluster)_job$(ProcId).stderr
+Log = Log/$(AnaScript)_$(Cluster)_job$(ProcId).log
+Arguments = $(AnaScript).py $(InRootFile)
+
+Queue InRootFile from FilePaths/hcalnano_r379349.txt
+Queue InRootFile from FilePaths/hcalnano_r379350.txt
