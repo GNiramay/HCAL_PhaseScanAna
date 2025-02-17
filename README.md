@@ -47,3 +47,8 @@ rm -f *.root
 cd Plotting/
 python3 RespCorr.py ../Hadded/Full.root
 ```
+
+## Script description:
+|File name|Goal|
+|:--------|:--:|
+|[RespCorr_Occup_v_ieta.py](Plotting/RespCorr_Occup_v_ieta.py)|Overlays occupancy vs ieta for all depths|
