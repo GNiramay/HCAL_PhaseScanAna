@@ -3,4 +3,4 @@ CMSSWVer=CMSSW_14_2_2
 scram p $CMSSWVer
 cd $CMSSWVer/;cmsenv;cd -
 
-mkdir -p StdOut StdErr Log FilePaths ConfFiles Analysis Plotting
+mkdir -p StdOut StdErr Log FilePaths ConfFiles Analysis Plotting Hadded
