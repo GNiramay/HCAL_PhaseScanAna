@@ -52,3 +52,4 @@ python3 RespCorr.py ../Hadded/Full.root
 |File name|Goal|
 |:--------|:--:|
 |[RespCorr_Occup_v_ieta.py](Plotting/RespCorr_Occup_v_ieta.py)|Overlays occupancy vs ieta for all depths|
+|[RespCorr_EnergyScale.py](Plotting/RespCorr_EnergyScale.py)|Reads a text file that stores the occupancy reference values, calculates energy scale and plots energy scale, scaled occupancy|
