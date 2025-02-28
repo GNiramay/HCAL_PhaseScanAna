@@ -10,6 +10,12 @@ LumiInfo = {"379349":46.48,
             "379350":38.75,
             "Full"  :85.23}
 
+# Write the occupancy reference values to a text file
+# There is a freedom to choose the reference value, but for convenience, we will stick to values at 4ns (for 2024 phase scan)
+# In general, select a value which is less that what appears at 0 ns
+refPhase = 4
+fRefVal = open('RefVal.txt','w')
+
 tf = rt.TFile(argv[1],'READ')
 hAll = tf.Get('hRespCorrData')
 
@@ -17,7 +23,9 @@ hAll = tf.Get('hRespCorrData')
 nTotalBins = [hAll.GetAxis(ii).GetNbins() for ii in range(hAll.GetNdimensions())]
 
 # Get hits over 4GeV
-hAll.GetAxis(3).SetRange(nTotalBins[3],nTotalBins[3]+1)
+Rechit_energy_thr = 4.0
+
+hAll.GetAxis(3).SetRange(hAll.GetAxis(3).FindBin(Rechit_energy_thr),nTotalBins[3]+1)
 hGood = hAll.Projection(3,ar('i',[0,1,2]))
 hAll.GetAxis(3).SetRange(0,nTotalBins[3]+1)
 
@@ -61,6 +69,7 @@ def IEtaSlice(hall,hgood,IEta,OutName):
         hRatio.SetMarkerColor(dd)
         hRatio.SetTitle(f'depth {dd};QIE Phase Offset [ns];Fraction of hits over 4 GeV')
         hlist.append(hRatio)
+        fRefVal.write(f'{IEta}\t{dd}\t{hRatio.GetBinContent(hRatio.FindBin(refPhase))}\n')
 
         if YMax < hRatio.GetMaximum():
             YMax = hRatio.GetMaximum()
@@ -82,8 +91,10 @@ def IEtaSlice(hall,hgood,IEta,OutName):
     tc.SaveAs(OutName+'.png')
     tc.SaveAs(OutName+'.pdf')
     del tc
+
     return
 
 # plot each ieta
 for ee in range(-29,30):
-    IEtaSlice(hAll,hGood,ee,f'/eos/home-n/ngogate/www/HCAL_DPG/PhaseScan_2024/Occup_v_IEta/IEta_{ee}')
+    IEtaSlice(hAll,hGood,ee,f'/eos/home-n/ngogate/www/HCAL_DPG/PhaseScan_2024/tempOccup/IEta_{ee}')
+fRefVal.close()

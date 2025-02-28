@@ -15,9 +15,9 @@ def Analyze(df,OutRoot):
     df = df.Define('TShift1','tshift+0*RecHitHBHE_depth')
 
     # 	     Depth	ieta	tshift	Rechit energy
-    nBins = [7, 	61,	21,	100]
+    nBins = [7, 	61,	21,	400]
     bLow =  [0.5,	-30.5,	-10.5,	0.]
-    bHigh = [7.5,  	30.5,   10.5,	Rechit_energy_thr]
+    bHigh = [7.5,  	30.5,   10.5,	4*Rechit_energy_thr]
 
     tf = rt.TFile(OutRoot,'RECREATE')
     df.HistoND(rt.RDF.THnDModel("hRespCorrData",";depth;ieta;tshift",4,nBins,bLow,bHigh),
