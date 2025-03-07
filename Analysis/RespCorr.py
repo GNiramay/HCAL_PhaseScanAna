@@ -7,11 +7,14 @@ rt.EnableImplicitMT()
 Rechit_energy_thr = 4.0
 
 def Analyze(df,OutRoot):
-    df = df.Define('IEta','RecHitHBHE_ieta[RecHitHBHE_energy>4]')\
-           .Define('Depth','RecHitHBHE_depth[RecHitHBHE_energy>4]')
+
+    # Exclude 0 rechit energy hits
+    for prop in ['depth','ieta','iphi','energy']:
+        df = df.Redefine(f'RecHitHBHE_{prop}',f'RecHitHBHE_{prop}[RecHitHBHE_energy > 0]')
+
+    # QIE phase offset (tshift)
     if 'tshift' not in df.GetColumnNames():
         df = df.Define("tshift","(uMNio_UserWord1*(uMNio_UserWord1<2147483648))+(uMNio_UserWord1-4294967296)*(uMNio_UserWord1>2147483648)")
-
     df = df.Define('TShift1','tshift+0*RecHitHBHE_depth')
 
     # 	     Depth	ieta	tshift	Rechit energy
