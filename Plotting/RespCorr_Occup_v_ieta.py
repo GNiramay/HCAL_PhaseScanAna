@@ -10,11 +10,13 @@ LumiInfo = {"379349":46.48,
             "379350":38.75,
             "Full"  :85.23}
 
+OutFolder = '/eos/home-n/ngogate/www/HCAL_DPG/PhaseScan_2024/Occup_v_IEta_NonzeroRechits/'
+
 # Write the occupancy reference values to a text file
 # There is a freedom to choose the reference value, but for convenience, we will stick to values at 4ns (for 2024 phase scan)
 # In general, select a value which is less that what appears at 0 ns
 refPhase = 4
-fRefVal = open('RefVal.txt','w')
+fRefVal = open('RefVal_NonzeroRechits.txt','w')
 
 tf = rt.TFile(argv[1],'READ')
 hAll = tf.Get('hRespCorrData')
@@ -96,5 +98,5 @@ def IEtaSlice(hall,hgood,IEta,OutName):
 
 # plot each ieta
 for ee in range(-29,30):
-    IEtaSlice(hAll,hGood,ee,f'/eos/home-n/ngogate/www/HCAL_DPG/PhaseScan_2024/tempOccup/IEta_{ee}')
+    IEtaSlice(hAll,hGood,ee,OutFolder+f'IEta_{ee}')
 fRefVal.close()
