@@ -10,16 +10,21 @@ LumiInfo = {"379349":46.48,
             "379350":38.75,
             "Full"  :85.23}
 
-OutFolder = '/eos/home-n/ngogate/www/HCAL_DPG/PhaseScan_2024/Occup_v_IEta_NonzeroRechits/'
+
+tf = rt.TFile(argv[1],'READ')
+hAll = tf.Get(argv[2])
+# hAll = tf.Get('hRespCorrData')
 
 # Write the occupancy reference values to a text file
 # There is a freedom to choose the reference value, but for convenience, we will stick to values at 4ns (for 2024 phase scan)
 # In general, select a value which is less that what appears at 0 ns
-refPhase = 4
-fRefVal = open('RefVal_NonzeroRechits.txt','w')
+refPhase = 20
+# refPhase = 4
+fRefVal = open(argv[3],'w')
+# fRefVal = open('RefVal_NonzeroRechits.txt','w')
 
-tf = rt.TFile(argv[1],'READ')
-hAll = tf.Get('hRespCorrData')
+OutFolder = argv[4]
+# OutFolder = '/eos/home-n/ngogate/www/HCAL_DPG/PhaseScan_2024/Occup_v_IEta_NonzeroRechits/'
 
 # Get total no. of bins along all axes
 nTotalBins = [hAll.GetAxis(ii).GetNbins() for ii in range(hAll.GetNdimensions())]
@@ -29,7 +34,7 @@ Rechit_energy_thr = 4.0
 
 hAll.GetAxis(3).SetRange(hAll.GetAxis(3).FindBin(Rechit_energy_thr),nTotalBins[3]+1)
 hGood = hAll.Projection(3,ar('i',[0,1,2]))
-hAll.GetAxis(3).SetRange(0,nTotalBins[3]+1)
+hAll.GetAxis(3).SetRange(1,nTotalBins[3]+1)
 
 def DrawCMSHeading(opt=1,lumi_pb=300,ycoord=0.91,xleft=0.12,xright=0.7):
     textOnTop = rt.TLatex()
@@ -81,7 +86,7 @@ def IEtaSlice(hall,hgood,IEta,OutName):
 
     for hh in hlist:
         hh.Draw("p same")
-        hh.GetXaxis().SetRangeUser(-6,4)
+        # hh.GetXaxis().SetRangeUser(-6,4)
         hh.SetMinimum(0)
         hh.SetMaximum(1.2*YMax)
     tc.BuildLegend(.75,.7,.95,.9)
@@ -90,6 +95,7 @@ def IEtaSlice(hall,hgood,IEta,OutName):
     etaInfo.SetTextSize(0.04)
     etaInfo.DrawLatexNDC(0.14,0.85,f"i#eta {IEta}")
     hlist[0].SetTitle('')
+
     tc.SaveAs(OutName+'.png')
     tc.SaveAs(OutName+'.pdf')
     del tc
@@ -100,3 +106,5 @@ def IEtaSlice(hall,hgood,IEta,OutName):
 for ee in range(-29,30):
     IEtaSlice(hAll,hGood,ee,OutFolder+f'IEta_{ee}')
 fRefVal.close()
+
+# IEtaSlice(hAll,hGood,15,OutFolder+f'IEta_15')
